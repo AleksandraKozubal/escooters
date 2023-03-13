@@ -51,6 +51,7 @@ class HardcodedCitiesToCountriesAssigner
             "Varese" => "Italy",
             "Verona" => "Italy",
             "Viareggio" => "Italy",
+            "Vienna" => "Austria",
             "Vila Franca de Xira" => "Portugal",
             "Vila Nova de Gaia" => "Portugal",
             "Villemomble" => "France",
