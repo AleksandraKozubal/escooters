@@ -37,6 +37,7 @@ Cached cities loaded.
 | 10 | Neuron | partially webscrapped |
 | 11 | Whoosh | hardcoded |
 | 12 | Helbiz | hardcoded |
+| 13 | BIT Mobility | webscrapped |
 
 ### Screenshot
 
