@@ -2,7 +2,7 @@
 
 ### Last build
 ```
-Build date: 2023-03-18 01:58:19
+Build date: 2023-03-18 15:54:09
 
 3 cities fetched for Roler.
 9 cities fetched for Hulaj.
@@ -15,8 +15,9 @@ Build date: 2023-03-18 01:58:19
 40 cities fetched for Helbiz.
 18 cities fetched for Whoosh.
 121 cities fetched for Bird.
+29 cities fetched for Dott.
 
-495 cities fetched.
+505 cities fetched.
 Cached cities loaded.
 ```
 

@@ -27,7 +27,7 @@ use EScooters\Services\QuickChartIconsService;
 use EScooters\Utils\BuildInfo;
 
 Dotenv::createImmutable(__DIR__)->load();
-$token = "pk.eyJ1Ijoib2xha296dWJhbCIsImEiOiJjbGZkM24xNGkwcW9mM3lwZ3dkYjQ5dGJyIn0.tVo0w_ntb1uY6LJrAixD-w";//$_ENV["VUE_APP_MAPBOX_TOKEN"];
+$token = $_ENV["VUE_APP_MAPBOX_TOKEN"];
 
 $cities = new Cities();
 $countries = new Countries();
