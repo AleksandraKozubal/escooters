@@ -14,6 +14,7 @@ use EScooters\Importers\LimeDataImporter;
 use EScooters\Importers\LinkDataImporter;
 use EScooters\Importers\NeuronDataImporter;
 use EScooters\Importers\QuickDataImporter;
+use EScooters\Importers\RolerDataImporter;
 use EScooters\Importers\SpinDataImporter;
 use EScooters\Importers\TierDataImporter;
 use EScooters\Importers\VoiDataImporter;
@@ -26,7 +27,7 @@ use EScooters\Services\QuickChartIconsService;
 use EScooters\Utils\BuildInfo;
 
 Dotenv::createImmutable(__DIR__)->load();
-$token = $_ENV["VUE_APP_MAPBOX_TOKEN"];
+$token = "pk.eyJ1Ijoib2xha296dWJhbCIsImEiOiJjbGZkM24xNGkwcW9mM3lwZ3dkYjQ5dGJyIn0.tVo0w_ntb1uY6LJrAixD-w";//$_ENV["VUE_APP_MAPBOX_TOKEN"];
 
 $cities = new Cities();
 $countries = new Countries();
@@ -34,6 +35,7 @@ $providers = new Providers();
 
 /** @var array<DataImporter> $dataImporters */
 $dataImporters = [
+    new RolerDataImporter($cities,$countries),
     new HulajDataImporter($cities,$countries),
     new BITMobilityDataImporter($cities,$countries),
     new BoltDataImporter($cities, $countries),
@@ -41,7 +43,7 @@ $dataImporters = [
     new QuickDataImporter($cities, $countries),
 //    new TierDataImporter($cities, $countries),
     new VoiDataImporter($cities, $countries),
-    new LinkDataImporter($cities, $countries),
+//    new LinkDataImporter($cities, $countries),
     new SpinDataImporter($cities, $countries),
     new NeuronDataImporter($cities, $countries),
     new HelbizDataImporter($cities, $countries),
