@@ -6,8 +6,6 @@ namespace EScooters\Importers;
 
 use EScooters\Importers\DataSources\HtmlDataSource;
 use EScooters\Importers\DataSources\JsonDataSource;
-use EScooters\Utils\HardcodedCitiesToCountriesAssigner;
-use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
 class DottDataImporter extends DataImporter implements HtmlDataSource, JsonDataSource

@@ -17,7 +17,8 @@ class MapboxGeocodingService
 
     public function __construct(
         protected string $token,
-    ) {
+    )
+    {
         if (file_exists(static::CACHE_FILENAME)) {
             echo "Cached cities loaded." . PHP_EOL;
             $this->cache = json_decode(file_get_contents(static::CACHE_FILENAME), true);
@@ -46,15 +47,33 @@ class MapboxGeocodingService
 
         try {
             $response = $client->get(
-                "https://api.mapbox.com/geocoding/v5/mapbox.places/${name}.json?access_token=${token}&types=place",
+                "https://api.mapbox.com/geocoding/v5/mapbox.places/${name}.json?access_token=${token}",
             );
             $coordinates = json_decode($response->getBody()->getContents(), true)["features"][0]["center"];
             $this->cache[$city->getId()] = $coordinates;
             $city->setCoordinates($coordinates);
         } catch (GuzzleException) {
-            echo "Coordinates for $name were not fetched.".PHP_EOL;
+            echo "Coordinates for $name were not fetched." . PHP_EOL;
         }
 
         file_put_contents(static::CACHE_FILENAME, json_encode($this->cache, JSON_UNESCAPED_UNICODE));
+    }
+
+    public function getCountryFromAPI(mixed $city): string
+    {
+        $client = new Client();
+        $name = trim($city->nodeValue);
+        $token = $this->token;
+
+        try {
+            $response = $client->get(
+                "https://api.mapbox.com/geocoding/v5/mapbox.places/${name}.json?access_token=${token}",
+            );
+            $country = json_decode($response->getBody()->getContents(), true)["features"][0]["place_name"];
+        } catch (GuzzleException) {
+            echo "Coordinates for $name were not fetched." . PHP_EOL;
+        }
+
+        return $country;
     }
 }

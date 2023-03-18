@@ -2,14 +2,17 @@
 
 ### Last build
 ```
-Build date: 2023-03-18 15:54:09
+Cached cities loaded.
+Build date: 2023-03-18 22:19:48
 
 3 cities fetched for Roler.
 9 cities fetched for Hulaj.
 24 cities fetched for BITMobility.
 199 cities fetched for Bolt.
+230 cities fetched for Lime.
 27 cities fetched for Quick.
 100 cities fetched for Voi.
+42 cities fetched for Link.
 49 cities fetched for Spin.
 29 cities fetched for Neuron.
 40 cities fetched for Helbiz.
@@ -17,21 +20,20 @@ Build date: 2023-03-18 15:54:09
 121 cities fetched for Bird.
 29 cities fetched for Dott.
 
-505 cities fetched.
-Cached cities loaded.
+644 cities fetched.
 ```
 
 ### Available providers
 
 | No. | Provider | Data source |
-|---|------|-------------|
-| 1 | ~~Lime~~ | ~~webscrapped~~ |
+|---|-----|-------------|
+| 1 | Lime | webscrapped |
 | 2 | Bolt | web API     |
 | 3 | ~~Tier~~ | ~~web API~~ |
 | 4 | Bird | webscrapped with partially estimated countries |
-| 5 | Voi  | webscrapped |
+| 5 | Voi | webscrapped |
 | 6 | Spin | webscrapped |
-| 7 | ~~Link~~ | ~~webscrapped~~ |
+| 7 | Link| webscrapped |
 | 8 | Dott | webscrapped |
 | 9 | Quick | webscrapped |
 | 10 | Neuron | partially webscrapped |

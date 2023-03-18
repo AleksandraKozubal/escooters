@@ -5,18 +5,17 @@ require "./vendor/autoload.php";
 use Dotenv\Dotenv;
 use EScooters\Importers\BirdDataImporter;
 use EScooters\Importers\BITMobilityDataImporter;
-use EScooters\Importers\HulajDataImporter;
 use EScooters\Importers\BoltDataImporter;
 use EScooters\Importers\DataImporter;
 use EScooters\Importers\DottDataImporter;
 use EScooters\Importers\HelbizDataImporter;
+use EScooters\Importers\HulajDataImporter;
 use EScooters\Importers\LimeDataImporter;
 use EScooters\Importers\LinkDataImporter;
 use EScooters\Importers\NeuronDataImporter;
 use EScooters\Importers\QuickDataImporter;
 use EScooters\Importers\RolerDataImporter;
 use EScooters\Importers\SpinDataImporter;
-use EScooters\Importers\TierDataImporter;
 use EScooters\Importers\VoiDataImporter;
 use EScooters\Importers\WhooshDataImporter;
 use EScooters\Models\Repositories\Cities;
@@ -32,18 +31,19 @@ $token = $_ENV["VUE_APP_MAPBOX_TOKEN"];
 $cities = new Cities();
 $countries = new Countries();
 $providers = new Providers();
+$mapbox = new MapboxGeocodingService($token);
 
 /** @var array<DataImporter> $dataImporters */
 $dataImporters = [
-    new RolerDataImporter($cities,$countries),
-    new HulajDataImporter($cities,$countries),
-    new BITMobilityDataImporter($cities,$countries),
+    new RolerDataImporter($cities, $countries),
+    new HulajDataImporter($cities, $countries),
+    new BITMobilityDataImporter($cities, $countries),
     new BoltDataImporter($cities, $countries),
-//    new LimeDataImporter($cities, $countries),
+    new LimeDataImporter($cities, $countries, $mapbox),
     new QuickDataImporter($cities, $countries),
 //    new TierDataImporter($cities, $countries),
     new VoiDataImporter($cities, $countries),
-//    new LinkDataImporter($cities, $countries),
+    new LinkDataImporter($cities, $countries),
     new SpinDataImporter($cities, $countries),
     new NeuronDataImporter($cities, $countries),
     new HelbizDataImporter($cities, $countries),
@@ -72,7 +72,6 @@ foreach ($dataImporters as $dataImporter) {
 $count = count($cities->all());
 echo PHP_EOL . "$count cities fetched." . PHP_EOL;
 
-$mapbox = new MapboxGeocodingService($token);
 $mapbox->setCoordinatesToCities($cities);
 
 $mapbox = new QuickChartIconsService();

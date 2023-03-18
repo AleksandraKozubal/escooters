@@ -6,11 +6,20 @@ namespace EScooters\Importers;
 
 use DOMElement;
 use EScooters\Importers\DataSources\HtmlDataSource;
+use EScooters\Models\Repositories\Cities;
+use EScooters\Models\Repositories\Countries;
 use Symfony\Component\DomCrawler\Crawler;
 
 class LimeDataImporter extends DataImporter implements HtmlDataSource
 {
     protected Crawler $sections;
+    private $mapbox;
+
+    public function __construct(Cities $cities, Countries $countries, $mapboxGeocodingService)
+    {
+        parent::__construct($cities, $countries);
+        $this->mapbox = $mapboxGeocodingService;
+    }
 
     public function getBackground(): string
     {
@@ -22,38 +31,23 @@ class LimeDataImporter extends DataImporter implements HtmlDataSource
         $html = file_get_contents("https://www.li.me/locations");
 
         $crawler = new Crawler($html);
-        $this->sections = $crawler->filter("li.mb-5");
+        $this->sections = $crawler->filter("div#content-wrapper main div.pb-4.text-white div.overflow-hidden > div >div");
 
         return $this;
     }
 
     public function transform(): static
     {
+
         /** @var DOMElement $section */
-        foreach ($this->sections as $section) {
-            $country = null;
+        foreach ($this->sections as $city) {
+            $countryName = $this->mapbox->getCountryFromAPI($city);
+            $countryName = substr($countryName, strrpos($countryName, ', ') + 2);
 
-            foreach ($section->childNodes as $node) {
-                if ($node->nodeName === "strong") {
-                    $countryName = trim($node->nodeValue ?? "");
-                    $country = $this->countries->retrieve($countryName);
-                }
-
-                if ($node->nodeName === "ul") {
-                    foreach ($node->childNodes as $city) {
-                        if ($city->nodeName === "li") {
-                            if (str_contains($city->nodeValue, "University")) {
-                                continue;
-                            }
-
-                            $city = $this->cities->retrieve($city->nodeValue, $country);
-                            $this->provider->addCity($city);
-                        }
-                    }
-                }
-            }
+            $country = $this->countries->retrieve($countryName);
+            $city = $this->cities->retrieve(trim($city->nodeValue), $country);
+            $this->provider->addCity($city);
         }
-
         return $this;
     }
 }
