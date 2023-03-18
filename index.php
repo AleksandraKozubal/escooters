@@ -49,7 +49,7 @@ $dataImporters = [
     new HelbizDataImporter($cities, $countries),
     new WhooshDataImporter($cities, $countries),
     new BirdDataImporter($cities, $countries),
-//    new DottDataImporter($cities, $countries),
+    new DottDataImporter($cities, $countries),
 
 ];
 

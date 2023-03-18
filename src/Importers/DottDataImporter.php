@@ -8,10 +8,11 @@ use EScooters\Importers\DataSources\HtmlDataSource;
 use EScooters\Importers\DataSources\JsonDataSource;
 use EScooters\Utils\HardcodedCitiesToCountriesAssigner;
 use GuzzleHttp\Client;
+use Symfony\Component\DomCrawler\Crawler;
 
 class DottDataImporter extends DataImporter implements HtmlDataSource, JsonDataSource
 {
-    protected array $markers = [];
+    protected Crawler $sections;
 
     public function getBackground(): string
     {
@@ -20,33 +21,34 @@ class DottDataImporter extends DataImporter implements HtmlDataSource, JsonDataS
 
     public function extract(): static
     {
-        $client = new Client();
-        $response = $client->get("https://ridedott.com/iframe/map-iframe")->getBody()->getContents();
-        $script = explode("const DATA = '", $response)[1];
-        $script = explode("';</script><script>const", $script);
-
-        $json = json_decode($script[0], true);
-        $this->markers = $json["markers"];
+        $html = file_get_contents("https://ridedott.com/ride-with-us/paris/");
+        $crawler = new Crawler($html);
+        $this->sections = $crawler->filter("div .group.inline-block div.hidden ul.inline-flex li.mb-4");
 
         return $this;
     }
 
     public function transform(): static
     {
-        foreach ($this->markers as $marker) {
-            $url = $marker["url"];
-            $parts = explode("/", $url);
-
-            $cityName = ucfirst($parts[count($parts) - 1]);
-
+        /** @var DOMElement $section */
+        foreach ($this->sections as $section) {
             $country = null;
-            $hardcoded = HardcodedCitiesToCountriesAssigner::assign($cityName);
-            if ($hardcoded) {
-                $country = $this->countries->retrieve($hardcoded);
-            }
 
-            $city = $this->cities->retrieve($cityName, $country);
-            $this->provider->addCity($city);
+            foreach ($section->childNodes as $node) {
+                if ($node->nodeName === "span") {
+                    $countryName = ($node->nodeValue == "UK") ? "United Kingdom" : $node->nodeValue;
+                    $country = $this->countries->retrieve($countryName);
+                }
+
+                if ($node->nodeName === "ul") {
+                    foreach ($node->childNodes as $city) {
+                        if ($city->nodeName === "li") {
+                            $city = $this->cities->retrieve(trim($city->nodeValue), $country);
+                            $this->provider->addCity($city);
+                        }
+                    }
+                }
+            }
         }
 
         return $this;
