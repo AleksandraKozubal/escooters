@@ -16,6 +16,7 @@ use EScooters\Importers\NeuronDataImporter;
 use EScooters\Importers\QuickDataImporter;
 use EScooters\Importers\RolerDataImporter;
 use EScooters\Importers\SpinDataImporter;
+use EScooters\Importers\TierDataImporter;
 use EScooters\Importers\VoiDataImporter;
 use EScooters\Importers\WhooshDataImporter;
 use EScooters\Models\Repositories\Cities;
@@ -41,7 +42,7 @@ $dataImporters = [
     new BoltDataImporter($cities, $countries),
     new LimeDataImporter($cities, $countries, $mapbox),
     new QuickDataImporter($cities, $countries),
-//    new TierDataImporter($cities, $countries),
+    new TierDataImporter($cities, $countries),
     new VoiDataImporter($cities, $countries),
     new LinkDataImporter($cities, $countries),
     new SpinDataImporter($cities, $countries),

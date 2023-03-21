@@ -31,21 +31,21 @@ class LimeDataImporter extends DataImporter implements HtmlDataSource
         $html = file_get_contents("https://www.li.me/locations");
 
         $crawler = new Crawler($html);
-        $this->sections = $crawler->filter("div#content-wrapper main div.pb-4.text-white div.overflow-hidden > div >div");
+        $this->sections = $crawler->filter("div#content-wrapper main div.pb-4.text-white div.overflow-hidden > div > div");
 
         return $this;
     }
 
     public function transform(): static
     {
-
         /** @var DOMElement $section */
-        foreach ($this->sections as $city) {
-            $countryName = $this->mapbox->getCountryFromAPI($city);
+        foreach ($this->sections as $section) {
+            $cityName = trim($section->nodeValue);
+            $countryName = $this->mapbox->getCountryFromAPI($cityName);
             $countryName = substr($countryName, strrpos($countryName, ', ') + 2);
 
             $country = $this->countries->retrieve($countryName);
-            $city = $this->cities->retrieve(trim($city->nodeValue), $country);
+            $city = $this->cities->retrieve($cityName, $country);
             $this->provider->addCity($city);
         }
         return $this;
