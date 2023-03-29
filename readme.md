@@ -2,6 +2,7 @@
 ![screenshot.png](screenshot.png)
 ### Ideas to consider
 - restrict max zoom out to avoid looped empty map view
+- after selecting the country, description of provider could show the number of cities of the country selected by us, and not number of all provider's cities shown on a map
 - city search bar to find and pin location on a map - user would've been able to check e-scooters nearby
 - selection bar for countries or sth like map stick to viewport, now the list is definitely too long
 - e-scooters providers seen as square logo buttons - more info (like number of cities, link to website) seen on click
@@ -10,25 +11,25 @@
 ### Last build
 ```
 Cached cities loaded.
-Build date: 2023-03-21 13:01:56
+Build date: 2023-03-29 22:31:41
 
 3 cities fetched for Roler.
 9 cities fetched for Hulaj.
 24 cities fetched for BITMobility.
 199 cities fetched for Bolt.
 230 cities fetched for Lime.
-27 cities fetched for Quick.
-360 cities fetched for Tier.
+17 cities fetched for Quick.
+361 cities fetched for Tier.
 100 cities fetched for Voi.
 42 cities fetched for Link.
 49 cities fetched for Spin.
-29 cities fetched for Neuron.
+30 cities fetched for Neuron.
 40 cities fetched for Helbiz.
 18 cities fetched for Whoosh.
 121 cities fetched for Bird.
 29 cities fetched for Dott.
 
-847 cities fetched.
+835 cities fetched.
 ```
 
 ### Available providers

@@ -18,6 +18,7 @@ class CountryNamesNormalizer
             "Uk" => "United Kingdom",
             "Sverige" => "Sweden",
             "Dinamarca" => "Denmark",
+            "Österreich" => "Austria",
             default => $name,
         };
     }

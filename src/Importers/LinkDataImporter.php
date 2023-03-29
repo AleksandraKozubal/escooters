@@ -37,7 +37,7 @@ class LinkDataImporter extends DataImporter implements HtmlDataSource
     {
         $country = null;
         $countryName = null;
-        $states = ["California", "Connecticut", "Illinois", "Kansas", "Maryland", "Michigan", "New Jersey", "Ohio", "Tennessee", "Texas", "Virginia", "Washington"];
+        $states = ["California", "Connecticut", "Illinois", "Kansas", "Maryland", "Michigan", "New Jersey", "Ohio", "Oregon", "Tennessee", "Texas", "Virginia", "Washington"];
         /** @var DOMElement $section */
         foreach ($this->sections as $section) {
             if ($section->nodeValue === "Ride with us in cities around the world!") {
@@ -47,18 +47,17 @@ class LinkDataImporter extends DataImporter implements HtmlDataSource
                 if ($node->nodeName === "strong") {
                     if (in_array($node->nodeValue, $states, true)) {
                         $countryName = "United States";
-                        $country = $this->countries->retrieve($countryName);
-                        continue 2;
                     } else {
                         $countryName = trim($node->nodeValue);
                     }
+                    $country = $this->countries->retrieve($countryName);
+                } else {
+                    if (str_contains(trim($section->nodeValue), "coming soon"))
+                        continue;
+                    $city = $this->cities->retrieve(trim($section->nodeValue), $country);
+                    $this->provider->addCity($city);
                 }
-                $country = $this->countries->retrieve($countryName);
             }
-
-            $city = $this->cities->retrieve(trim($section->nodeValue), $country);
-            if ($countryName === $city->getName()) continue;
-            $this->provider->addCity($city);
         }
 
         return $this;
